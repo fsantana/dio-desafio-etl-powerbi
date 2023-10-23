@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: company_constraints
+      MYSQL_USER: powerbi
+      MYSQL_PASSWORD: powerbi
+    ports:
+      - 3306:3306
+    volumes:
+      - ./sql_scripts:/docker-entrypoint-initdb.d
+      - powerbi-data:/var/lib/mysql
+volumes:
+  powerbi-data:
+    driver: local
